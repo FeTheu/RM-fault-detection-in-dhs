@@ -15,7 +15,7 @@
       <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="145" name="Preprocessing" width="90" x="112" y="85">
         <process expanded="true">
           <operator activated="true" class="read_csv" compatibility="9.8.000" expanded="true" height="68" name="Read CSV" width="90" x="45" y="34">
-            <parameter key="csv_file" value="C:/Users/theusch/OneDrive/01 Master of Science/Masterarbeit/03_Daten/meter_data/meter/c167f4f9-53d2-4b46-b3a6-ce2b06277a74.csv"/>
+            <parameter key="csv_file" value="C:/Users/theusch/OneDrive/01 Master of Science/Masterarbeit/03_Daten/meter_data/meter/c8d735c0-4acd-47fe-a0c4-f6b2635f3e4b.csv"/>
             <parameter key="column_separators" value=";"/>
             <parameter key="trim_lines" value="false"/>
             <parameter key="use_quotes" value="true"/>
@@ -216,7 +216,7 @@
           <description align="center" color="yellow" colored="false" height="305" resized="true" width="844" x="11" y="223">&lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; Outlier detection and transformation</description>
         </process>
       </operator>
-      <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="124" name="Clustering k = 2" width="90" x="380" y="136">
+      <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="124" name="Clustering k = 3" width="90" x="380" y="136">
         <process expanded="true">
           <operator activated="true" class="multiply" compatibility="9.8.000" expanded="true" height="103" name="Multiply (9)" width="90" x="45" y="34"/>
           <operator activated="true" class="select_attributes" compatibility="9.8.000" expanded="true" height="82" name="Select Attributes (16)" width="90" x="179" y="136">
@@ -242,7 +242,7 @@
             <parameter key="add_cluster_attribute" value="true"/>
             <parameter key="add_as_label" value="false"/>
             <parameter key="remove_unlabeled" value="false"/>
-            <parameter key="k" value="2"/>
+            <parameter key="k" value="3"/>
             <parameter key="max_runs" value="10"/>
             <parameter key="determine_good_start_values" value="true"/>
             <parameter key="measure_types" value="BregmanDivergences"/>
@@ -310,12 +310,13 @@
             </list>
             <parameter key="keep_all" value="true"/>
           </operator>
-          <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="103" name="Cluster Separation k = 2" width="90" x="45" y="136">
+          <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="103" name="Cluster Separation k = 3" width="90" x="45" y="136">
             <process expanded="true">
               <operator activated="true" class="generate_attributes" compatibility="9.8.000" expanded="true" height="82" name="Generate Attributes (36)" width="90" x="45" y="34">
                 <list key="function_descriptions">
                   <parameter key="Cluster = 0" value="if(cluster == &quot;cluster_0&quot;,&quot;X&quot;,NaN)"/>
                   <parameter key="Cluster = 1" value="if(cluster == &quot;cluster_1&quot;,&quot;X&quot;,NaN)"/>
+                  <parameter key="Cluster = 2" value="if(cluster == &quot;cluster_2&quot;,&quot;X&quot;,NaN)"/>
                 </list>
                 <parameter key="keep_all" value="true"/>
               </operator>
@@ -338,6 +339,7 @@
                   <parameter key="Cluster = 0" value="count (ignoring missings)"/>
                   <parameter key="Cluster = 1" value="count (ignoring missings)"/>
                   <parameter key="average(Power)" value="average"/>
+                  <parameter key="Cluster = 2" value="count (ignoring missings)"/>
                 </list>
                 <parameter key="group_by_attributes" value="Weekday|Hour"/>
                 <parameter key="count_all_combinations" value="false"/>
@@ -346,7 +348,7 @@
               </operator>
               <operator activated="true" class="generate_attributes" compatibility="9.8.000" expanded="true" height="82" name="Generate Attributes (37)" width="90" x="313" y="34">
                 <list key="function_descriptions">
-                  <parameter key="Cluster" value="if([countWithOutMissings(Cluster = 0)]&gt;[countWithOutMissings(Cluster = 1)],&quot;Cluster 0&quot;,&quot;Cluster 1&quot;)"/>
+                  <parameter key="Cluster" value="if([countWithOutMissings(Cluster = 0)]&gt;=[countWithOutMissings(Cluster = 1)] &amp;&amp;&#10;[countWithOutMissings(Cluster = 0)]&gt;=[countWithOutMissings(Cluster = 2)]  &#10;,&quot;Cluster 0&quot;,&#10;if([countWithOutMissings(Cluster = 1)]&gt;[countWithOutMissings(Cluster = 2)] &amp;&amp;&#10;[countWithOutMissings(Cluster = 1)]&gt;[countWithOutMissings(Cluster = 0)], &#10;&quot;Cluster 1&quot;, &quot;Cluster 2&quot;))"/>
                 </list>
                 <parameter key="keep_all" value="true"/>
               </operator>
@@ -383,7 +385,7 @@
           </operator>
           <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="82" name="Regression analysis" width="90" x="581" y="34">
             <process expanded="true">
-              <operator activated="true" class="multiply" compatibility="9.8.000" expanded="true" height="124" name="Multiply (2)" width="90" x="45" y="34"/>
+              <operator activated="true" class="multiply" compatibility="9.8.000" expanded="true" height="145" name="Multiply (2)" width="90" x="45" y="34"/>
               <operator activated="true" class="filter_examples" compatibility="9.8.000" expanded="true" height="103" name="Filter Examples (2)" width="90" x="246" y="136">
                 <parameter key="parameter_expression" value=""/>
                 <parameter key="condition_class" value="custom_filters"/>
@@ -465,7 +467,6 @@
                   <portSpacing port="sink_out 2" spacing="0"/>
                   <portSpacing port="sink_out 3" spacing="0"/>
                   <portSpacing port="sink_out 4" spacing="0"/>
-                  <description align="center" color="yellow" colored="false" height="105" resized="false" width="180" x="674" y="176">Type your comment</description>
                 </process>
               </operator>
               <operator activated="true" class="filter_examples" compatibility="9.8.000" expanded="true" height="103" name="Filter Examples" width="90" x="246" y="34">
@@ -551,7 +552,91 @@
                   <portSpacing port="sink_out 4" spacing="0"/>
                 </process>
               </operator>
-              <operator activated="true" class="append" compatibility="9.8.000" expanded="true" height="103" name="Append" width="90" x="514" y="136">
+              <operator activated="true" class="filter_examples" compatibility="9.8.000" expanded="true" height="103" name="Filter Examples (3)" width="90" x="246" y="238">
+                <parameter key="parameter_expression" value=""/>
+                <parameter key="condition_class" value="custom_filters"/>
+                <parameter key="invert_filter" value="false"/>
+                <list key="filters_list">
+                  <parameter key="filters_entry_key" value="Cluster.equals.Cluster 2"/>
+                </list>
+                <parameter key="filters_logic_and" value="true"/>
+                <parameter key="filters_check_metadata" value="true"/>
+              </operator>
+              <operator activated="true" class="subprocess" compatibility="9.8.000" expanded="true" height="124" name="Regr. cluster 1 (2)" width="90" x="380" y="442">
+                <process expanded="true">
+                  <operator activated="true" class="select_attributes" compatibility="9.8.000" expanded="true" height="82" name="Select Attributes (4)" width="90" x="45" y="34">
+                    <parameter key="attribute_filter_type" value="subset"/>
+                    <parameter key="attribute" value=""/>
+                    <parameter key="attributes" value="average(Outdoor temperature)|average(Power)|Day_and_Hour"/>
+                    <parameter key="use_except_expression" value="false"/>
+                    <parameter key="value_type" value="attribute_value"/>
+                    <parameter key="use_value_type_exception" value="false"/>
+                    <parameter key="except_value_type" value="time"/>
+                    <parameter key="block_type" value="attribute_block"/>
+                    <parameter key="use_block_type_exception" value="false"/>
+                    <parameter key="except_block_type" value="value_matrix_row_start"/>
+                    <parameter key="invert_selection" value="false"/>
+                    <parameter key="include_special_attributes" value="false"/>
+                  </operator>
+                  <operator activated="true" class="set_role" compatibility="9.8.000" expanded="true" height="82" name="Set Role (4)" width="90" x="179" y="34">
+                    <parameter key="attribute_name" value="Day_and_Hour"/>
+                    <parameter key="target_role" value="id"/>
+                    <list key="set_additional_roles">
+                      <parameter key="average(Power)" value="label"/>
+                    </list>
+                  </operator>
+                  <operator activated="true" class="linear_regression" compatibility="9.8.000" expanded="true" height="103" name="Linear Regression (3)" width="90" x="313" y="34">
+                    <parameter key="feature_selection" value="M5 prime"/>
+                    <parameter key="alpha" value="0.05"/>
+                    <parameter key="max_iterations" value="10"/>
+                    <parameter key="forward_alpha" value="0.05"/>
+                    <parameter key="backward_alpha" value="0.05"/>
+                    <parameter key="eliminate_colinear_features" value="true"/>
+                    <parameter key="min_tolerance" value="0.05"/>
+                    <parameter key="use_bias" value="true"/>
+                    <parameter key="ridge" value="1.0E-8"/>
+                  </operator>
+                  <operator activated="true" class="apply_model" compatibility="9.8.000" expanded="true" height="82" name="Apply Model (4)" width="90" x="447" y="34">
+                    <list key="application_parameters"/>
+                    <parameter key="create_view" value="false"/>
+                  </operator>
+                  <operator activated="true" class="performance_regression" compatibility="9.8.000" expanded="true" height="82" name="Performance (3)" width="90" x="581" y="34">
+                    <parameter key="main_criterion" value="first"/>
+                    <parameter key="root_mean_squared_error" value="true"/>
+                    <parameter key="absolute_error" value="false"/>
+                    <parameter key="relative_error" value="false"/>
+                    <parameter key="relative_error_lenient" value="false"/>
+                    <parameter key="relative_error_strict" value="false"/>
+                    <parameter key="normalized_absolute_error" value="false"/>
+                    <parameter key="root_relative_squared_error" value="false"/>
+                    <parameter key="squared_error" value="false"/>
+                    <parameter key="correlation" value="false"/>
+                    <parameter key="squared_correlation" value="false"/>
+                    <parameter key="prediction_average" value="false"/>
+                    <parameter key="spearman_rho" value="false"/>
+                    <parameter key="kendall_tau" value="false"/>
+                    <parameter key="skip_undefined_labels" value="true"/>
+                    <parameter key="use_example_weights" value="true"/>
+                  </operator>
+                  <connect from_port="in 1" to_op="Select Attributes (4)" to_port="example set input"/>
+                  <connect from_op="Select Attributes (4)" from_port="example set output" to_op="Set Role (4)" to_port="example set input"/>
+                  <connect from_op="Set Role (4)" from_port="example set output" to_op="Linear Regression (3)" to_port="training set"/>
+                  <connect from_op="Linear Regression (3)" from_port="model" to_op="Apply Model (4)" to_port="model"/>
+                  <connect from_op="Linear Regression (3)" from_port="exampleSet" to_op="Apply Model (4)" to_port="unlabelled data"/>
+                  <connect from_op="Apply Model (4)" from_port="labelled data" to_op="Performance (3)" to_port="labelled data"/>
+                  <connect from_op="Apply Model (4)" from_port="model" to_port="out 1"/>
+                  <connect from_op="Performance (3)" from_port="performance" to_port="out 2"/>
+                  <connect from_op="Performance (3)" from_port="example set" to_port="out 3"/>
+                  <portSpacing port="source_in 1" spacing="0"/>
+                  <portSpacing port="source_in 2" spacing="0"/>
+                  <portSpacing port="sink_out 1" spacing="0"/>
+                  <portSpacing port="sink_out 2" spacing="0"/>
+                  <portSpacing port="sink_out 3" spacing="0"/>
+                  <portSpacing port="sink_out 4" spacing="0"/>
+                  <description align="center" color="yellow" colored="false" height="105" resized="false" width="180" x="674" y="176">Type your comment</description>
+                </process>
+              </operator>
+              <operator activated="true" class="append" compatibility="9.8.000" expanded="true" height="124" name="Append" width="90" x="514" y="136">
                 <parameter key="datamanagement" value="double_array"/>
                 <parameter key="data_management" value="auto"/>
                 <parameter key="merge_type" value="all"/>
@@ -569,23 +654,26 @@
               <connect from_op="Multiply (2)" from_port="output 1" to_op="Filter Examples" to_port="example set input"/>
               <connect from_op="Multiply (2)" from_port="output 2" to_op="Filter Examples (2)" to_port="example set input"/>
               <connect from_op="Multiply (2)" from_port="output 3" to_op="Join (6)" to_port="right"/>
+              <connect from_op="Multiply (2)" from_port="output 4" to_op="Filter Examples (3)" to_port="example set input"/>
               <connect from_op="Filter Examples (2)" from_port="example set output" to_op="Regr. cluster 1" to_port="in 1"/>
               <connect from_op="Regr. cluster 1" from_port="out 3" to_op="Append" to_port="example set 2"/>
               <connect from_op="Filter Examples" from_port="example set output" to_op="Regr. cluster 0" to_port="in 1"/>
               <connect from_op="Regr. cluster 0" from_port="out 3" to_op="Append" to_port="example set 1"/>
+              <connect from_op="Filter Examples (3)" from_port="example set output" to_op="Regr. cluster 1 (2)" to_port="in 1"/>
+              <connect from_op="Regr. cluster 1 (2)" from_port="out 3" to_op="Append" to_port="example set 3"/>
               <connect from_op="Append" from_port="merged set" to_op="Join (6)" to_port="left"/>
               <connect from_op="Join (6)" from_port="join" to_port="out 1"/>
               <portSpacing port="source_in 1" spacing="0"/>
               <portSpacing port="source_in 2" spacing="0"/>
               <portSpacing port="sink_out 1" spacing="0"/>
               <portSpacing port="sink_out 2" spacing="0"/>
-              <description align="center" color="yellow" colored="false" height="420" resized="true" width="558" x="206" y="11">&lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br/&gt;&lt;br/&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Regression analysis for each cluster</description>
+              <description align="center" color="yellow" colored="false" height="618" resized="true" width="565" x="201" y="23">&lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br/&gt;&lt;br/&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Regression analysis for each cluster</description>
             </process>
           </operator>
           <connect from_port="in 1" to_op="Generate Attributes (6)" to_port="example set input"/>
-          <connect from_port="in 2" to_op="Cluster Separation k = 2" to_port="in 1"/>
+          <connect from_port="in 2" to_op="Cluster Separation k = 3" to_port="in 1"/>
           <connect from_op="Generate Attributes (6)" from_port="example set output" to_op="Join (5)" to_port="left"/>
-          <connect from_op="Cluster Separation k = 2" from_port="out 1" to_op="Generate Attributes (7)" to_port="example set input"/>
+          <connect from_op="Cluster Separation k = 3" from_port="out 1" to_op="Generate Attributes (7)" to_port="example set input"/>
           <connect from_op="Generate Attributes (7)" from_port="example set output" to_op="Join (5)" to_port="right"/>
           <connect from_op="Join (5)" from_port="join" to_op="Regression analysis" to_port="in 1"/>
           <connect from_op="Regression analysis" from_port="out 1" to_port="out 1"/>
@@ -617,7 +705,7 @@
             <parameter key="sorting_direction" value="increasing"/>
           </operator>
           <operator activated="true" class="multiply" compatibility="9.8.000" expanded="true" height="82" name="Multiply (4)" width="90" x="447" y="34"/>
-          <operator activated="false" class="write_excel" compatibility="9.8.000" expanded="true" height="82" name="Write Excel" width="90" x="648" y="85">
+          <operator activated="false" class="write_excel" compatibility="9.8.000" expanded="true" height="82" name="Write Excel" width="90" x="581" y="85">
             <parameter key="file_format" value="xlsx"/>
             <enumeration key="sheet_names"/>
             <parameter key="sheet_name" value="RapidMiner Data"/>
@@ -638,8 +726,8 @@
         </process>
       </operator>
       <connect from_op="Preprocessing" from_port="out 1" to_op="Regression" to_port="in 1"/>
-      <connect from_op="Preprocessing" from_port="out 2" to_op="Clustering k = 2" to_port="in 1"/>
-      <connect from_op="Clustering k = 2" from_port="out 3" to_op="Regression" to_port="in 2"/>
+      <connect from_op="Preprocessing" from_port="out 2" to_op="Clustering k = 3" to_port="in 1"/>
+      <connect from_op="Clustering k = 3" from_port="out 3" to_op="Regression" to_port="in 2"/>
       <connect from_op="Regression" from_port="out 1" to_op="Residual analysis" to_port="in 1"/>
       <connect from_op="Residual analysis" from_port="out 1" to_port="result 1"/>
       <portSpacing port="source_input 1" spacing="0"/>
